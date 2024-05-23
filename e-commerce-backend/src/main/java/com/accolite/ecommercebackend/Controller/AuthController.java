@@ -46,11 +46,6 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/demo")
-    public String demo(){
-        return "This is demo";
-    }
-
 
 }
 
