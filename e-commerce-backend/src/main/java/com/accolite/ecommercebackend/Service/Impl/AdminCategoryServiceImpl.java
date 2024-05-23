@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AdminAdminCategoryServiceImpl implements AdminCategoryService {
+public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Autowired
     private AdminCategoryRepository adminCategoryRepository;
 

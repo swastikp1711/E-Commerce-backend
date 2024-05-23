@@ -1,7 +1,7 @@
 package com.accolite.ecommercebackend.Controller;
 
 import com.accolite.ecommercebackend.Entity.Category;
-import com.accolite.ecommercebackend.Service.Impl.AdminAdminCategoryServiceImpl;
+import com.accolite.ecommercebackend.Service.Impl.AdminCategoryServiceImpl;
 import com.accolite.ecommercebackend.dto.Request.CategoryAdminRequest;
 import com.accolite.ecommercebackend.dto.Response.CategoryAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class AdminCategoryController {
 
     @Autowired
-    private AdminAdminCategoryServiceImpl adminCategoryServiceImpl;
+    private AdminCategoryServiceImpl adminCategoryServiceImpl;
 
     @PostMapping("/addCategory")
     public CategoryAdminResponse createCategory(@RequestBody CategoryAdminRequest categoryAdminRequest) {

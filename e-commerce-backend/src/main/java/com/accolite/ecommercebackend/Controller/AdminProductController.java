@@ -1,6 +1,6 @@
 package com.accolite.ecommercebackend.Controller;
 
-import com.accolite.ecommercebackend.Service.Impl.AdminAdminProductServiceImpl;
+import com.accolite.ecommercebackend.Service.Impl.AdminProductServiceImpl;
 import com.accolite.ecommercebackend.dto.Request.ProductRequestadmin;
 import com.accolite.ecommercebackend.dto.Response.ProductResponseadmin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequestMapping("/api/admin/products")
 public class AdminProductController {
     @Autowired
-    private AdminAdminProductServiceImpl adminProductServiceImpl;
+    private AdminProductServiceImpl adminProductServiceImpl;
 
     @PostMapping ("/addProduct")
     public ResponseEntity<ProductResponseadmin> createProduct(@RequestBody ProductRequestadmin productRequestadmin) {

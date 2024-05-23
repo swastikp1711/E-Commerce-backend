@@ -18,7 +18,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class AdminAdminProductServiceImpl implements AdminProductService {
+public class AdminProductServiceImpl implements AdminProductService {
     @Autowired
     private AdminProductRepository adminProductRepository;
     @Autowired

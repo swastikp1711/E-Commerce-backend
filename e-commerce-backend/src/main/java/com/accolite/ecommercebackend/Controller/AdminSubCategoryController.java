@@ -2,7 +2,7 @@ package com.accolite.ecommercebackend.Controller;
 
 import com.accolite.ecommercebackend.Entity.SubCategory;
 import com.accolite.ecommercebackend.Repository.AdminCategoryRepository;
-import com.accolite.ecommercebackend.Service.Impl.AdminAdminSubCategoryServiceImpl;
+import com.accolite.ecommercebackend.Service.Impl.AdminSubCategoryServiceImpl;
 import com.accolite.ecommercebackend.dto.Request.SubCategoryAdminRequest;
 import com.accolite.ecommercebackend.dto.Response.SubCategoryAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class AdminSubCategoryController {
 
     @Autowired
-    private AdminAdminSubCategoryServiceImpl adminSubCategoryServiceImpl;
+    private AdminSubCategoryServiceImpl adminSubCategoryServiceImpl;
     private AdminCategoryRepository adminCategoryRepository;
 
     @PostMapping

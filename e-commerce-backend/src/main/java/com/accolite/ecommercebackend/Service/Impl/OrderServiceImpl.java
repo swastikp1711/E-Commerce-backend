@@ -57,7 +57,11 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.save(order);
     }
-
+    @Override
+    public Orders findOrderbyId(UUID orderId) {
+        Orders orders=orderRepository.findbyOrderId(orderId);
+        return orders;
+    }
     @Override
     public GetOrdersResponse getUserOrders() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();

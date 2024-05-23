@@ -4,8 +4,11 @@ import com.accolite.ecommercebackend.Exception.IncorrectPasswordException;
 import com.accolite.ecommercebackend.Exception.UserAlreadyExistException;
 import com.accolite.ecommercebackend.Exception.UserNotFoundException;
 import com.accolite.ecommercebackend.Service.AuthService;
+import com.accolite.ecommercebackend.Service.OtpService;
 import com.accolite.ecommercebackend.dto.Request.LoginUserRequest;
+import com.accolite.ecommercebackend.dto.Request.SendOtpRequest;
 import com.accolite.ecommercebackend.dto.Request.SignUpUserRequest;
+import com.accolite.ecommercebackend.dto.Response.OtpResponse;
 import com.accolite.ecommercebackend.dto.Response.UserAuthResponse;
 import jakarta.validation.Valid;
 //import org.slf4j.Logger;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
 
+    Integer otp;
+    @Autowired
+    private OtpService otpService;
     @Autowired
     private AuthService authService;
 
@@ -31,6 +37,18 @@ public class AuthController {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UserAlreadyExistException e) {
             return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/auth/sendotp")
+    public ResponseEntity<OtpResponse> sendOtp(@Valid @RequestBody SendOtpRequest sendOtpRequest) {
+
+        otp= (int) (Math.random()*(800000)+100000);
+        boolean otpSent = otpService.sendOtp(sendOtpRequest.getEmail(),otp.toString());
+        if (otpSent) {
+            return ResponseEntity.ok(new OtpResponse(true, "OTP has been sent successfully.",otp.toString()));
+        } else {
+            return ResponseEntity.ok(new OtpResponse(false, "Failed to send OTP. Please try again later.",""));
         }
     }
 
