@@ -105,12 +105,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItemUpdateResponse getCartItemsCount() {
-        System.out.println("Inside getCartItermCount");
-//        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
-        User user = userRepository.findByEmail("chennu.pooja@gmail.com");
+        User user = userRepository.findByEmail(email);
 
-//        System.out.println("Inside method : "+email);
         Integer cartItemCount = cartRepository.sumQuantityByUser(user);
 
         if(cartItemCount==null) cartItemCount =0;
