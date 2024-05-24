@@ -31,7 +31,7 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
 
     public List<SubCategoryAdminResponse> getAllSubCategories() {
         return adminSubCategoryRepository.findAvailableSubcategory()
-                .stream().map(this::mapToDto).collect(Collectors.toList());
+                .stream().map(subCategory -> mapToDto(subCategory)).collect(Collectors.toList());
     }
     public List<SubCategoryAdminResponse> getAllSubCategoriesbyCategoryName(String categoryName){
         return adminSubCategoryRepository.findbyCategoryByName(categoryName).stream()
@@ -52,12 +52,13 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
 //    }
 
     public SubCategory getSubCategoryById(UUID subCategoryId)  {
+        System.out.println("inside getSubCategoryById");
         return adminSubCategoryRepository.findAvailableSubcategoryById(subCategoryId)
                 .orElseThrow(() -> new RuntimeException("Subcategory not found"));
     }
     public SubCategoryAdminResponse mapToDto(SubCategory subCategory){
         SubCategoryAdminResponse response = new SubCategoryAdminResponse();
-//        response.setSubCategoryId(subCategory.getSubCategoryId());
+        response.setSubCategoryId(subCategory.getSubCategoryId());
         response.setSubCategoryName(subCategory.getSubCategoryName());
 //        response.setCategoryName(subCategory.getCategory().getCategoryName());
         return response;

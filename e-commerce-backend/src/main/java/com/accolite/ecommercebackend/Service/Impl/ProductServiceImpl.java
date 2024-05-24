@@ -11,6 +11,8 @@ import com.accolite.ecommercebackend.dto.Request.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -25,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProduct(ProductRequest productRequest) {
+
+        LocalDateTime createdDate = LocalDateTime.now();
+
         Product product = new Product();
         product.setImageUrl(productRequest.getImageUrl());
         product.setTitle(productRequest.getTitle());
@@ -36,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productRequest.getPrice());
         product.setDiscountPercent(productRequest.getDiscountPercent());
         product.setDeliveryCharges(productRequest.getDeliveryCharges());
+        product.setCreatedDate(createdDate);
 
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));

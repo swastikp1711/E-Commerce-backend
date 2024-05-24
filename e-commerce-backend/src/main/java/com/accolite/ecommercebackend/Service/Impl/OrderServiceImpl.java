@@ -6,16 +6,14 @@ import com.accolite.ecommercebackend.Service.OrderService;
 import com.accolite.ecommercebackend.dto.Request.OrderDetailsRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderProductsInfoRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderRequest;
-import com.accolite.ecommercebackend.dto.Response.GetOrdersResponse;
-import com.accolite.ecommercebackend.dto.Response.OrderDetailsInfoResponse;
-import com.accolite.ecommercebackend.dto.Response.OrderProductCardInfoResponse;
-import com.accolite.ecommercebackend.dto.Response.OrderResponse;
+import com.accolite.ecommercebackend.dto.Response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -112,33 +110,48 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDetailsInfoResponse getOrderDetailsById(UUID orderId) {
-        // Retrieve order using orderId
         Orders order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
 
-        // Map OrderDetails to OrderProductCardInfoResponse
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+        String formattedOrderDate = order.getOrderDate().format(formatter);
+
+
         List<OrderProductCardInfoResponse> productCardInfoResponses = order.getOrderDetails().stream()
                 .map(this::mapToOrderProductCardInfoResponse)
                 .collect(Collectors.toList());
 
-        // Create and return the response
+        Address address = order.getAddress();
+        AddressResponse addressResponse = new AddressResponse(
+                address.getAddressId(),
+                address.getAddress(),
+                address.getCity(),
+                address.getState(),
+                address.getName(),
+                address.getPhoneNumber(),
+                address.getPostalCode(),
+                address.getUser().getUserId()
+        );
+
         return new OrderDetailsInfoResponse(
-                order.getOrderDate(),
+                formattedOrderDate,
                 order.getTotalAmount(),
-                order.getAddress(),
+                addressResponse,
                 order.getOrderStatus(),
                 productCardInfoResponses
         );
     }
 
-    private OrderProductCardInfoResponse mapToOrderProductCardInfoResponse(OrderDetail orderDetail) {
+    private OrderProductCardInfoResponse mapToOrderProductCardInfoResponse(OrderDetail orderDetails) {
+
+
         return new OrderProductCardInfoResponse(
-                orderDetail.getProduct().getImageUrl(),
-                orderDetail.getProduct().getTitle(),
-                orderDetail.getProduct().getSubtitle(),
-                orderDetail.getProduct().getBrand(),
-                orderDetail.getUnitPrice(),
-                orderDetail.getQuantity()
+                orderDetails.getProduct().getImageUrl(),
+                orderDetails.getProduct().getTitle(),
+                orderDetails.getProduct().getSubtitle(),
+                orderDetails.getProduct().getBrand(),
+                orderDetails.getUnitPrice(),
+                orderDetails.getQuantity()
         );
     }
 }

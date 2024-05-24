@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubCategoryAdminResponse {
-    //    private UUID subCategoryId;
+    private UUID subCategoryId;
     private String subCategoryName;
 //    private String categoryName;
 }

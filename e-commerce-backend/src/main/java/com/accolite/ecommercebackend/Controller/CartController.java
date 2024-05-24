@@ -57,6 +57,4 @@ public class CartController {
         CartItemUpdateResponse response = cartService.getCartItemsCount();
         return ResponseEntity.ok(response);
     }
-
-
 }
