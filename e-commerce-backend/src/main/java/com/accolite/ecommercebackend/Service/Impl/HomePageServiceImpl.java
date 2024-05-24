@@ -32,12 +32,16 @@ public class HomePageServiceImpl implements HomePageService {
     @Override
     public HomePageLoadResponse loadHomePage() {
         List<Category> categories = categoryRepository.findByDeletedDateIsNull();
+        System.out.println("*********************************************");
 
         List<SubCategory> subCategories = categories.stream()
                 .flatMap(category -> category.getSubCategories().stream())
                 .filter(subCategory -> subCategory.getDeletedDate() == null)
                 .filter(subCategory -> subCategory.getProducts().stream().filter(product -> product.getDeletedDate() == null).count() > 10)
                 .toList();
+
+        System.out.println(subCategories.get(0).getSubCategoryName());
+
 
         List<HomePageLoadResponse.SubCategoryInfo> subCategoryInfos = subCategories.stream()
                 .collect(Collectors.groupingBy(SubCategory::getCategory))
