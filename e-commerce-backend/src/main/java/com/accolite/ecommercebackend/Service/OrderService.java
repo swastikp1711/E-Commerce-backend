@@ -17,4 +17,5 @@ public interface OrderService {
     void createOrderDetails(OrderDetailsRequest orderDetailsRequest);
 
     OrderDetailsInfoResponse getOrderDetailsById(UUID orderId);
+    GetOrdersResponse getOrders();
 }

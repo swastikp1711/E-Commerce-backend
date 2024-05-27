@@ -24,7 +24,7 @@ public class AdminSubCategoryController {
     public SubCategoryAdminResponse createSubCategory(@RequestBody SubCategoryAdminRequest subCategoryAdminRequest) {
         SubCategory subCategory = new SubCategory();
         subCategory.setSubCategoryName(subCategoryAdminRequest.getSubCategoryName());
-        SubCategory newSubCategory = adminSubCategoryServiceImpl.createSubCategory(subCategoryAdminRequest.getCategoryId(),subCategory);
+        SubCategory newSubCategory = adminSubCategoryServiceImpl.createSubCategory(subCategoryAdminRequest.getCategoryName(),subCategory);
 //        return new SubCategoryAdminResponse(newSubCategory.getSubCategoryId(),newSubCategory.getSubCategoryName(),newSubCategory.getCategory().getCategoryId());
         return adminSubCategoryServiceImpl.mapToDto(newSubCategory);
     }

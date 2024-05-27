@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface AdminProductService {
     public ProductResponseadmin createProduct(ProductRequestadmin productRequestadmin);
-    public ProductResponseadmin updateProduct(UUID productId, ProductRequestadmin productRequestadmin);
+//    public ProductResponseadmin updateProduct(UUID productId, ProductRequestadmin productRequestadmin);
     public List<ProductResponseadmin> fetchAllProducts();
     public ProductResponseadmin fetchProductById(UUID productId);
-    public ProductAdminResponse fetchLimitedProductById(UUID productId);
+//    public ProductAdminResponse fetchLimitedProductById(UUID productId);
 
 }
