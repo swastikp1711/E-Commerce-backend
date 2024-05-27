@@ -52,7 +52,7 @@ public class PaymentController {
 		try{
 			RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
 			JSONObject paymentLinkRequest=new JSONObject();
-			paymentLinkRequest.put("amount",order.getTotalAmount()*100);
+			paymentLinkRequest.put("amount",Math.ceil(order.getTotalAmount()*100));
 			paymentLinkRequest.put("currency","INR");
 
 			JSONObject customer=new JSONObject();
@@ -65,7 +65,7 @@ public class PaymentController {
 			notify.put("email",true);
 			paymentLinkRequest.put("notify",notify);
 
-			paymentLinkRequest.put("callback_url","http://localhost:5173/orderDetails");
+			paymentLinkRequest.put("callback_url","http://localhost:5173/paymentsuccessfull/"+orderId.toString());
 			paymentLinkRequest.put("callback_method","get");
 			PaymentLink payment=razorpayClient.paymentLink.create(paymentLinkRequest);
 
@@ -86,16 +86,16 @@ public class PaymentController {
 		}
 	}
 
-	@GetMapping("/payments")
+	@PostMapping("/payments")
 	public ResponseEntity<PaymentResponse> redirect(@RequestParam(name="payment_id") String paymentId, @RequestParam(name="order_id") UUID orderId) throws RazorpayException {
 		Orders orders=orderService.findOrderbyId(orderId);
 		RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
 		try{
 			Payment payment=razorpayClient.payments.fetch(paymentId);
-			if(payment.get("status").equals("captured")){
-				paymentService.setStatus(orders);
-				paymentService.reduceProductQuantity(orderId);
+			if(payment.get("captured")){
 				paymentService.addPayment(orders, paymentId);
+				paymentService.setStatus(orders, paymentId);
+				paymentService.reduceProductQuantity(orderId);
 			}
 			PaymentResponse res=new PaymentResponse();
 			res.setMessage("Order Placed");

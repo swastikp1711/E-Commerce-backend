@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -26,8 +27,9 @@ public class PaymentServiceImpl implements PaymentService {
 		productRepository.reduceQuantity(orderId);
 	}
 	@Override
-	public void setStatus(Orders orders){
-		orders.getPayment().setPaymentStatus("Completed");
+	public void setStatus(Orders orders, String paymentId){
+		Optional<Payment> payment=paymentRepository.findById(paymentId);
+		payment.get().setPaymentStatus("Completed");
 		orders.setOrderStatus("Placed");
 		orderRepository.save(orders);
 	}
