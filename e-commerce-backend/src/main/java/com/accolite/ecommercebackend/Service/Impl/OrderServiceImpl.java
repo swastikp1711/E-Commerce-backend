@@ -37,9 +37,8 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
 
     @Override
-    public void createOrder(OrderRequest orderRequest) {
+    public OrderResponse createOrder(OrderRequest orderRequest) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-
         User user = userRepository.findByEmail(email);
 
         Address address = addressRepository.findById(orderRequest.getAddressId())
@@ -53,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setAddress(address);
 
-        orderRepository.save(order);
+        Orders savedOrder = orderRepository.save(order);
+        return new OrderResponse(savedOrder.getOrderId());
     }
     @Override
     public Orders findOrderbyId(UUID orderId) {

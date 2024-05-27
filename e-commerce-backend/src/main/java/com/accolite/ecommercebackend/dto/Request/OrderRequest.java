@@ -13,7 +13,5 @@ public class OrderRequest {
 
     private Double totalAmount;
 
-    private UUID userId;
-
     private UUID addressId;
 }

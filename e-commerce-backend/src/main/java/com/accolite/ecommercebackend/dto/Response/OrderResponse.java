@@ -18,5 +18,9 @@ public class OrderResponse {
 
     private Double totalAmount;
 
+    public OrderResponse(UUID orderId){
+        this.orderId = orderId;
+    }
+
 
 }

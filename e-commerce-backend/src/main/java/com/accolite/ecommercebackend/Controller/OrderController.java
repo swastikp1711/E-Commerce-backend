@@ -5,6 +5,7 @@ import com.accolite.ecommercebackend.dto.Request.OrderDetailsRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderRequest;
 import com.accolite.ecommercebackend.dto.Response.GetOrdersResponse;
 import com.accolite.ecommercebackend.dto.Response.OrderDetailsInfoResponse;
+import com.accolite.ecommercebackend.dto.Response.OrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,8 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
-        orderService.createOrder(orderRequest);
-        return new ResponseEntity<>("Order created successfully", HttpStatus.CREATED);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
+        return new ResponseEntity<>(orderService.createOrder(orderRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAll")
