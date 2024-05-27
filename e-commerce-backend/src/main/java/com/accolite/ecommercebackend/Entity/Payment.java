@@ -16,10 +16,8 @@ import java.util.UUID;
 public class Payment {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name="paymentId", columnDefinition = "BINARY(16)")
-    private UUID paymentId;
+    private String paymentId;
 
     @OneToOne
     @JoinColumn(name = "orderId")
