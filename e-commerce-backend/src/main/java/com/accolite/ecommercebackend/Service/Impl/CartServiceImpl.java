@@ -115,6 +115,14 @@ public class CartServiceImpl implements CartService {
         return new CartItemUpdateResponse(cartItemCount);
 
     }
+
+    @Override
+    public void removeAllCartItem() {
+        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        User user = userRepository.findByEmail(email);
+
+        cartRepository.deleteAllItemsByUserId(user.getUserId());
+    }
 }
 
 

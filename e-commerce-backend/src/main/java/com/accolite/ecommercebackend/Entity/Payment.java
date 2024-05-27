@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Payment {
 
     @Id
-    @Column(name="paymentId", columnDefinition = "BINARY(16)")
+    @Column(name="paymentId")
     private String paymentId;
 
     @OneToOne

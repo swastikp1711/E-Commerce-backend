@@ -16,4 +16,6 @@ public interface CartService {
     CartPageResponse getCartItems();
 
     CartItemUpdateResponse getCartItemsCount();
+
+    void removeAllCartItem();
 }
