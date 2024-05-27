@@ -44,6 +44,12 @@ public class CartController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @DeleteMapping("/remove/all")
+    public ResponseEntity<String> removeAllCartItem() {
+            cartService.removeAllCartItem();
+            return ResponseEntity.ok("User profile deleted successfully");
+    }
+
 
     @GetMapping("/items")
     public ResponseEntity<CartPageResponse> getCartItems() {
