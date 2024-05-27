@@ -5,11 +5,12 @@ import com.accolite.ecommercebackend.dto.Request.OrderDetailsRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderRequest;
 import com.accolite.ecommercebackend.dto.Response.GetOrdersResponse;
 import com.accolite.ecommercebackend.dto.Response.OrderDetailsInfoResponse;
+import com.accolite.ecommercebackend.dto.Response.OrderResponse;
 
 import java.util.UUID;
 
 public interface OrderService {
-    void createOrder(OrderRequest orderRequest);
+    OrderResponse createOrder(OrderRequest orderRequest);
 
     GetOrdersResponse getUserOrders();
     Orders findOrderbyId(UUID orderId);
