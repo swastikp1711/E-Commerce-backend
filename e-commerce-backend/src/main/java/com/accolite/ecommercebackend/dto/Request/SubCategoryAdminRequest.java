@@ -12,5 +12,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SubCategoryAdminRequest {
     private String subCategoryName;
-    private UUID categoryId;
+    private String categoryName;
 }

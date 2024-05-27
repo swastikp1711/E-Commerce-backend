@@ -85,7 +85,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    @Override
+    public GetOrdersResponse getOrders() {
+        List<Orders> ordersList = orderRepository.findAll();
+        List<OrderResponse> orderResponses = ordersList.stream().map(order -> {
+            List<String> productImages = order.getOrderDetails().stream()
+                    .map(orderDetail -> orderDetail.getProduct().getImageUrl())
+                    .collect(Collectors.toList());
 
+
+            return new OrderResponse(
+                    order.getOrderId(),
+                    productImages,
+                    order.getOrderStatus(),
+                    order.getTotalAmount()
+            );
+        }).collect(Collectors.toList());
+
+        return new GetOrdersResponse(orderResponses);
+    }
 
 
     @Override

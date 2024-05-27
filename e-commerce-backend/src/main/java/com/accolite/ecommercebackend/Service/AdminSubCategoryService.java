@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AdminSubCategoryService {
-    public SubCategory createSubCategory(UUID categoryId, SubCategory subCategory);
+    public SubCategory createSubCategory(String categoryName, SubCategory subCategory);
     public List<SubCategoryAdminResponse> getAllSubCategories();
     public SubCategory getSubCategoryById(UUID subCategoryId);
     public SubCategoryAdminResponse mapToDto(SubCategory subCategory);

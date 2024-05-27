@@ -6,8 +6,10 @@ import com.accolite.ecommercebackend.Repository.AdminProductRepository;
 import com.accolite.ecommercebackend.Repository.AdminSubCategoryRepository;
 import com.accolite.ecommercebackend.Service.AdminProductService;
 import com.accolite.ecommercebackend.dto.Request.ProductRequestadmin;
+import com.accolite.ecommercebackend.dto.Request.UpdateProductRequest;
 import com.accolite.ecommercebackend.dto.Response.ProductAdminResponse;
 import com.accolite.ecommercebackend.dto.Response.ProductResponseadmin;
+import com.accolite.ecommercebackend.dto.Response.UpdateProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +36,29 @@ public class AdminProductServiceImpl implements AdminProductService {
         return mapToDto(product);
     }
 
-    public ProductResponseadmin updateProduct(UUID productId, ProductRequestadmin productRequestadmin) {
+    //    public ProductResponseadmin updateProduct(UUID productId, ProductRequestadmin productRequestadmin) {
+//        Optional<Product> optionalProduct = adminProductRepository.findAvailableProductById(productId);
+//        if (optionalProduct.isPresent()) {
+//            Product product = optionalProduct.get();
+//            mapToEntity(productRequestadmin, product);
+//            product.setUpdatedDate(LocalDateTime.now());
+//            adminProductRepository.save(product);
+//            return mapToDto(product);
+//        }
+//        throw new RuntimeException("Product not found");
+//    }
+    public UpdateProductRequest updateProduct(UUID productId, UpdateProductRequest updateProductRequest){
         Optional<Product> optionalProduct = adminProductRepository.findAvailableProductById(productId);
-        if (optionalProduct.isPresent()) {
+        if (optionalProduct.isPresent()){
             Product product = optionalProduct.get();
-            mapToEntity(productRequestadmin, product);
+            mapToLimitedDto(updateProductRequest,product);
             product.setUpdatedDate(LocalDateTime.now());
             adminProductRepository.save(product);
-            return mapToDto(product);
-        }
-        throw new RuntimeException("Product not found");
-    }
+//        return mapToLimitedDto(updateProductRequest,product);
+            return updateProductRequest;
+        }else {
+            throw new RuntimeException("Product not found");
+        }}
 
 //    public List<ProductResponse> fetchAllProducts() {
 //        return productRepository.findAll().stream()
@@ -53,8 +67,16 @@ public class AdminProductServiceImpl implements AdminProductService {
 //                .collect(Collectors.toList());
 //    }
 
+    private void mapToLimitedDto(UpdateProductRequest updateProductRequest,Product product) {
+        product.setPrice(updateProductRequest.getPrice());
+        product.setQuantityAvailable(updateProductRequest.getQuantityAvailable());
+        product.setDiscountPercent(updateProductRequest.getDiscountPercent());
+        product.setDeliveryCharges(updateProductRequest.getDeliveryCharges());
+//        return product;
+    }
+
     public List<ProductResponseadmin> fetchAllProducts(){
-        return adminProductRepository.findProductByDeletedDateIsNullAndQuantityAvailableGreaterThan(0)
+        return adminProductRepository.findAvailableProducts()
                 .stream().map(this::mapToDto).collect(Collectors.toList());
     }
     public ProductResponseadmin fetchProductById(UUID productId) {
@@ -62,10 +84,10 @@ public class AdminProductServiceImpl implements AdminProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found or is unavailable"));
         return mapToDto(product);
     }
-    public ProductAdminResponse fetchLimitedProductById(UUID productId) {
-        Optional<Product> product = adminProductRepository.findAvailableProductById(productId);
-        return product.map(this::mapToLimitedDto).orElseThrow(() -> new RuntimeException("Product not found"));
-    }
+//    public ProductAdminResponse fetchLimitedProductById(UUID productId) {
+//        Optional<Product> product = adminProductRepository.findAvailableProductById(productId);
+//        return product.map(this::mapToLimitedDto).orElseThrow(() -> new RuntimeException("Product not found"));
+//    }
 
 
     public List<ProductResponseadmin> fetchProductsByCategory(UUID categoryId) {
@@ -128,17 +150,17 @@ public class AdminProductServiceImpl implements AdminProductService {
         response.setSubCategoryName(product.getSubCategory().getSubCategoryName());
         return response;
     }
-    private ProductAdminResponse mapToLimitedDto(Product product) {
-        ProductAdminResponse response = new ProductAdminResponse();
-        response.setProductId(product.getProductId());
-        response.setImageUrl(product.getImageUrl());
-        response.setTitle(product.getTitle());
-        response.setCategory(product.getCategory().getCategoryName());
-        response.setSubCategory(product.getSubCategory().getSubCategoryName());
-        response.setPrice(product.getPrice());
-        response.setQuantityAvailable(product.getQuantityAvailable());
-        return response;
-    }
+//    private ProductAdminResponse mapToLimitedDto(Product product) {
+//        ProductAdminResponse response = new ProductAdminResponse();
+//        response.setProductId(product.getProductId());
+//        response.setImageUrl(product.getImageUrl());
+//        response.setTitle(product.getTitle());
+//        response.setCategory(product.getCategory().getCategoryName());
+//        response.setSubCategory(product.getSubCategory().getSubCategoryName());
+//        response.setPrice(product.getPrice());
+//        response.setQuantityAvailable(product.getQuantityAvailable());
+//        return response;
+//    }
 
     public ProductResponseadmin deleteProduct(UUID productId) {
         Product product = adminProductRepository.findByProductIdAndDeletedDateIsNullAndQuantityAvailableGreaterThan(productId, 0)

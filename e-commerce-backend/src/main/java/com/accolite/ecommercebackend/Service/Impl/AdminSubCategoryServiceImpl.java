@@ -21,8 +21,8 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
     @Autowired
     private AdminCategoryRepository adminCategoryRepository;
 
-    public SubCategory createSubCategory(UUID categoryId, SubCategory subCategory) {
-        Category category = adminCategoryRepository.findById(categoryId)
+    public SubCategory createSubCategory(String categoryName, SubCategory subCategory) {
+        Category category = adminCategoryRepository.findCategoryByCategoryName(categoryName)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         subCategory.setCategory(category);
         subCategory.setCreatedDate(LocalDateTime.now());
@@ -31,7 +31,7 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
 
     public List<SubCategoryAdminResponse> getAllSubCategories() {
         return adminSubCategoryRepository.findAvailableSubcategory()
-                .stream().map(subCategory -> mapToDto(subCategory)).collect(Collectors.toList());
+                .stream().map(this::mapToDto).collect(Collectors.toList());
     }
     public List<SubCategoryAdminResponse> getAllSubCategoriesbyCategoryName(String categoryName){
         return adminSubCategoryRepository.findbyCategoryByName(categoryName).stream()
@@ -52,7 +52,6 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
 //    }
 
     public SubCategory getSubCategoryById(UUID subCategoryId)  {
-        System.out.println("inside getSubCategoryById");
         return adminSubCategoryRepository.findAvailableSubcategoryById(subCategoryId)
                 .orElseThrow(() -> new RuntimeException("Subcategory not found"));
     }

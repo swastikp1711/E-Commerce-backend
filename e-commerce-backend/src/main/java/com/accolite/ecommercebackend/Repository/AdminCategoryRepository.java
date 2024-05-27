@@ -16,5 +16,8 @@ public interface AdminCategoryRepository extends JpaRepository<Category, UUID> {
 
     @Query("SELECT c FROM Category c WHERE c.categoryId = :categoryId AND c.deletedDate IS NULL")
     Optional<Category> findAvailableCategoryById(UUID categoryId);
+
+    @Query("SELECT c FROM Category c WHERE c.categoryName= :categoryName")
+    Optional<Category> findCategoryByCategoryName(String categoryName);
 }
 
