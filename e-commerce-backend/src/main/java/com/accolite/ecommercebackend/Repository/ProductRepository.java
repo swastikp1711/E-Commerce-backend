@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID>{
 	@Modifying
 	@Transactional
-	@Query("update Product p set p.quantityAvailable = p.quantityAvailable-(select quantity from OrderDetail od where od.orders.orderId=:orderId and od.product.productId=p.productId)")
+	@Query("update Product p set p.quantityAvailable = p.quantityAvailable-(select quantity from OrderDetail od where od.orders.orderId=:orderId and od.product.productId=p.productId) where p.productId in (select od.product.productId from OrderDetail od where od.orders.orderId=:orderId)")
 	void reduceQuantity(UUID orderId);
 
 }
