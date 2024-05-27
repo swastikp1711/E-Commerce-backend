@@ -92,7 +92,7 @@ public class PaymentController {
 		RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
 		try{
 			Payment payment=razorpayClient.payments.fetch(paymentId);
-			if(payment.get("captured")){
+			if(orders.getOrderStatus().equals("Cancelled")){
 				paymentService.addPayment(orders, paymentId);
 				paymentService.setStatus(orders, paymentId);
 				paymentService.reduceProductQuantity(orderId);
