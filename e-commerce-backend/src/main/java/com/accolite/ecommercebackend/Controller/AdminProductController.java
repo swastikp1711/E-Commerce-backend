@@ -14,17 +14,17 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/admin/products")
+@RequestMapping("/")
 public class AdminProductController {
     @Autowired
     private AdminProductServiceImpl adminProductServiceImpl;
 
-    @PostMapping ("/addProduct")
+    @PostMapping ("api/admin/products/addProduct")
     public ResponseEntity<ProductResponseadmin> createProduct(@RequestBody ProductRequestadmin productRequestadmin) {
         return new ResponseEntity<ProductResponseadmin>(adminProductServiceImpl.createProduct(productRequestadmin), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{productId}")
+    @PutMapping("api/admin/products/{productId}")
     public ResponseEntity<UpdateProductRequest> updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductRequest updateProductRequest) {
         return ResponseEntity.ok(adminProductServiceImpl.updateProduct(productId, updateProductRequest));
     }
@@ -34,27 +34,27 @@ public class AdminProductController {
         return ResponseEntity.ok(adminProductServiceImpl.fetchAllProducts());
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("auth/admin/products/{productId}")
     public ResponseEntity<ProductResponseadmin> fetchProductById(@PathVariable UUID productId) {
         return ResponseEntity.ok(adminProductServiceImpl.fetchProductById(productId));
     }
 
-    @GetMapping("/byCategory/{categoryId}")
+    @GetMapping("api/admin/products/byCategory/{categoryId}")
     public ResponseEntity<List<ProductResponseadmin>> fetchProductsByCategory(@PathVariable UUID categoryId) {
         return ResponseEntity.ok(adminProductServiceImpl.fetchProductsByCategory(categoryId));
     }
 
-    @GetMapping("/bySubCategory/{subCategoryId}")
+    @GetMapping("api/admin/products/bySubCategory/{subCategoryId}")
     public ResponseEntity<List<ProductResponseadmin>> fetchProductsBySubCategory(@PathVariable UUID subCategoryId) {
         return ResponseEntity.ok(adminProductServiceImpl.fetchProductsBySubCategoryId(subCategoryId));
     }
 
-    @GetMapping("/byCategoryAndSubCategory")
+    @GetMapping("api/admin/products/byCategoryAndSubCategory")
     public ResponseEntity<List<ProductResponseadmin>> fetchProductsByCategoryAndSubCategory(@RequestParam UUID categoryId, @RequestParam UUID subCategoryId) {
         return ResponseEntity.ok(adminProductServiceImpl.fetchProductsByCategoryAndSubCategory(categoryId, subCategoryId));
     }
 
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("api/admin/products/{productId}")
     public ResponseEntity<ProductResponseadmin> deleteProduct(@PathVariable String productId) {
         try {
             UUID uuid = UUID.fromString(productId);
