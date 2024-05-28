@@ -4,10 +4,13 @@ import com.accolite.ecommercebackend.Exception.IncorrectPasswordException;
 import com.accolite.ecommercebackend.Exception.UserAlreadyExistException;
 import com.accolite.ecommercebackend.Exception.UserNotFoundException;
 import com.accolite.ecommercebackend.Service.AuthService;
+import com.accolite.ecommercebackend.Service.ChangePasswordService;
 import com.accolite.ecommercebackend.Service.OtpService;
+import com.accolite.ecommercebackend.dto.Request.ChangePasswordRequest;
 import com.accolite.ecommercebackend.dto.Request.LoginUserRequest;
 import com.accolite.ecommercebackend.dto.Request.SendOtpRequest;
 import com.accolite.ecommercebackend.dto.Request.SignUpUserRequest;
+import com.accolite.ecommercebackend.dto.Response.ChangePasswordResponse;
 import com.accolite.ecommercebackend.dto.Response.OtpResponse;
 import com.accolite.ecommercebackend.dto.Response.UserAuthResponse;
 import jakarta.validation.Valid;
@@ -20,12 +23,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
-
-    Integer otp;
     @Autowired
     private OtpService otpService;
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private ChangePasswordService changePasswordService;
 
 //    private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -42,14 +46,12 @@ public class AuthController {
 
     @PostMapping("/auth/sendotp")
     public ResponseEntity<OtpResponse> sendOtp(@Valid @RequestBody SendOtpRequest sendOtpRequest) {
+        return otpService.sendOtp(sendOtpRequest.getEmail(),sendOtpRequest.isResend());
+    }
 
-        otp= (int) (Math.random()*(800000)+100000);
-        boolean otpSent = otpService.sendOtp(sendOtpRequest.getEmail(),otp.toString());
-        if (otpSent) {
-            return ResponseEntity.ok(new OtpResponse(true, "OTP has been sent successfully.",otp.toString()));
-        } else {
-            return ResponseEntity.ok(new OtpResponse(false, "Failed to send OTP. Please try again later.",""));
-        }
+    @PutMapping("/auth/reset/password")
+    public ResponseEntity<ChangePasswordResponse> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+        return changePasswordService.updatePassword(changePasswordRequest.getEmail(),changePasswordRequest.getPassword());
     }
 
     @PostMapping("/auth/login")

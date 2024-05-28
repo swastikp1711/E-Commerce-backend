@@ -1,12 +1,16 @@
 package com.accolite.ecommercebackend.Service.Impl;
 
+import com.accolite.ecommercebackend.Entity.User;
+import com.accolite.ecommercebackend.Repository.UserRepository;
 import com.accolite.ecommercebackend.Service.OtpService;
+import com.accolite.ecommercebackend.dto.Response.OtpResponse;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +23,11 @@ public class OtpServiceImpl implements OtpService {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
+
+	@Autowired
+	private UserRepository userRepository;
 	@Override
-	public boolean sendOtp(String email, String otp) {
+	public ResponseEntity<OtpResponse> sendOtp(String email, boolean resend) {
 		try {
 //			// Save OTP in the database
 //			OtpEntity otpEntity = new OtpEntity();
@@ -28,15 +35,27 @@ public class OtpServiceImpl implements OtpService {
 //			otpEntity.setOtp(otp);
 //			otpEntity.setExpiryTime(LocalDateTime.now().plusMinutes(5)); // OTP expiry in 5 minutes
 //			otpRepository.save(otpEntity);
+			Integer intotp=(int)(Math.random()*(800000)+100000);
+			String otp=intotp.toString();
+			if(resend){
+				sendEmail(email, "ShopIt Email Verification", "Your Otp for Email Verification is: " + otp);
+				return ResponseEntity.ok(new OtpResponse(true, "OTP sent successfully.", otp));
+			}
+			else {
+				User user = userRepository.findByEmailAndDeletedDateIsNull(email);
+				if (user != null) {
+					// Send OTP via email
+					sendEmail(email, "ShopIt Email Verification", "Your Otp for Email Verification is: " + otp);
+					return ResponseEntity.ok(new OtpResponse(true, "OTP sent successfully.", otp));
+				} else {
+					return ResponseEntity.ok(new OtpResponse(false, "User does not exist", ""));
+				}
+			}
 
-			// Send OTP via email
-			sendEmail(email, "ShopIt Email Verification", "Your Otp for Email Verification is: "+otp);
-			return true;
 		}catch (Exception e){
 			System.out.println(e);
-			return false;
+			return ResponseEntity.ok(new OtpResponse(false, "Failed to send OTP. Please try again later.",""));
 		}
-
 	}
 	@Override
 	public void sendEmail(String to, String subject, String text) throws MessagingException {

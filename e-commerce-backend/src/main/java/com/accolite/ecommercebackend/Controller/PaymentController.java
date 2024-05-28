@@ -17,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,7 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
-@CacheConfig(cacheNames = "payment")
+@EnableCaching
 public class PaymentController {
 	@Value("${razorpay.api.key}")
 	String apiKey;
@@ -91,8 +92,10 @@ public class PaymentController {
 		Orders orders=orderService.findOrderbyId(orderId);
 		RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
 		try{
+
 			Payment payment=razorpayClient.payments.fetch(paymentId);
 			if(orders.getOrderStatus().equals("Cancelled")){
+				System.out.println("##Inside Render #####################################################"+ orders.getOrderStatus());
 				paymentService.addPayment(orders, paymentId);
 				paymentService.setStatus(orders, paymentId);
 				paymentService.reduceProductQuantity(orderId);
@@ -100,7 +103,7 @@ public class PaymentController {
 			PaymentResponse res=new PaymentResponse();
 			res.setMessage("Order Placed");
 			res.setStatus(true);
-			return new ResponseEntity<PaymentResponse>(res,HttpStatus.ACCEPTED);
+			return new ResponseEntity<PaymentResponse>(res,HttpStatus.OK);
 
 		}catch (Exception e){
 			throw new RazorpayException(e.getMessage());

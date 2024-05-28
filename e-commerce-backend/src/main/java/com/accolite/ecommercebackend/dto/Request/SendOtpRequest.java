@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 public class SendOtpRequest {
 	@Email
 	private String email;
+
+	private boolean isResend;
 }

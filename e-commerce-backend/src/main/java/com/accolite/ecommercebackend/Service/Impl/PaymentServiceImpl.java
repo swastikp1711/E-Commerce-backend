@@ -24,12 +24,13 @@ public class PaymentServiceImpl implements PaymentService {
 	private PaymentRepository paymentRepository;
 	@Override
 	public void reduceProductQuantity(UUID orderId){
-		productRepository.reduceQuantity(orderId);
+		LocalDateTime date=LocalDateTime.now();
+		productRepository.reduceQuantity(orderId,date );
 	}
 	@Override
 	public void setStatus(Orders orders, String paymentId){
 		Optional<Payment> payment=paymentRepository.findById(paymentId);
-		payment.get().setPaymentStatus("Completed");
+		payment.ifPresent(value -> value.setPaymentStatus("Completed"));
 		orders.setOrderStatus("Placed");
 		orderRepository.save(orders);
 	}

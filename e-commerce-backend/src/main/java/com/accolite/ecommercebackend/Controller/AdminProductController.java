@@ -29,7 +29,7 @@ public class AdminProductController {
         return ResponseEntity.ok(adminProductServiceImpl.updateProduct(productId, updateProductRequest));
     }
 
-    @GetMapping
+    @GetMapping("api/admin/products")
     public ResponseEntity<List<ProductResponseadmin>> fetchAllProducts() {
         return ResponseEntity.ok(adminProductServiceImpl.fetchAllProducts());
     }
