@@ -11,6 +11,8 @@ import com.accolite.ecommercebackend.dto.Request.SignUpUserRequest;
 import com.accolite.ecommercebackend.dto.Response.UserAuthResponse;
 import com.accolite.ecommercebackend.security.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -92,4 +94,19 @@ public class AuthServiceImpl implements AuthService {
         return new UserAuthResponse(token, user.getUserId(), user.getRole());
     }
 
+    @Override
+    public Boolean checkTokenExpiry(String authorizationHeader) {
+
+        Boolean isExpired=false;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+
+
+            String token = authorizationHeader.substring(7);
+
+            isExpired = helper.isTokenExpired(token);
+
+        }
+        return isExpired;
+    }
 }
