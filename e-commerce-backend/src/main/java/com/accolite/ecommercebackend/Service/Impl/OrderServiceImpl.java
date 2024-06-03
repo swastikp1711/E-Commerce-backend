@@ -41,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userRepository.findByEmail(email);
 
+        System.out.println(orderRequest);
         Address address = addressRepository.findById(orderRequest.getAddressId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid address ID"));
 
@@ -66,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
         User user = userRepository.findByEmail(email);
 
-        List<Orders> ordersList = orderRepository.findByUser(user);
+        List<Orders> ordersList = orderRepository.findByUserOrderByOrderDateDesc(user);;
 
         List<OrderResponse> orderResponses = ordersList.stream().map(order -> {
             List<String> productImages = order.getOrderDetails().stream()

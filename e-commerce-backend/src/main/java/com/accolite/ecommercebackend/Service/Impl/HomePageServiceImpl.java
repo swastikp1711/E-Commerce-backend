@@ -37,7 +37,7 @@ public class HomePageServiceImpl implements HomePageService {
         List<SubCategory> subCategories = categories.stream()
                 .flatMap(category -> category.getSubCategories().stream())
                 .filter(subCategory -> subCategory.getDeletedDate() == null)
-                .filter(subCategory -> subCategory.getProducts().stream().filter(product -> product.getDeletedDate() == null).count() > 10)
+                .filter(subCategory -> subCategory.getProducts().stream().filter(product -> product.getDeletedDate() == null).count() > 9)
                 .toList();
 
         System.out.println(subCategories.get(0).getSubCategoryName());
@@ -59,7 +59,8 @@ public class HomePageServiceImpl implements HomePageService {
                                     product.getSubtitle(),
                                     product.getBrand(),
                                     product.getPrice(),
-                                    product.getDiscountPercent()
+                                    product.getDiscountPercent(),
+                                    product.getQuantityAvailable()
                             ))
                             .collect(Collectors.toList());
 

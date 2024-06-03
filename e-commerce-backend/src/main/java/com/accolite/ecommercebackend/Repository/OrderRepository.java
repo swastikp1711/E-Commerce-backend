@@ -14,7 +14,8 @@ import java.util.UUID;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, UUID> {
 
-    List<Orders> findByUser(User user);
+
+    List<Orders> findByUserOrderByOrderDateDesc(User user);
 
     @Query("Select o from Orders o Where o.orderId=:orderId")
     Orders findbyOrderId(UUID orderId);

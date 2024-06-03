@@ -32,7 +32,10 @@ public class AddressServiceImpl implements AddressService {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userRepository.findByEmail(email);
 
-        List<AddressResponse> addressDetails = user.getAddresses().stream()
+
+        List<Address> addresses = addressRepository.findByUserAndDeletedDateIsNull(user);
+
+        List<AddressResponse> addressResponses = addresses.stream()
                 .map(address -> new AddressResponse(
                         address.getAddressId(),
                         address.getAddress(),
@@ -41,14 +44,15 @@ public class AddressServiceImpl implements AddressService {
                         address.getName(),
                         address.getPhoneNumber(),
                         address.getPostalCode(),
-                        user.getUserId()))
+                        user.getUserId()
+                ))
                 .collect(Collectors.toList());
 
-        return new AllAddressesResponse(addressDetails);
+        return new AllAddressesResponse(addressResponses);
     }
 
     @Override
-    public void saveAddress(AddressRequest addressRequest) {
+    public AddressResponse saveAddress(AddressRequest addressRequest) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         User user = userRepository.findByEmail(email);
 
@@ -63,6 +67,17 @@ public class AddressServiceImpl implements AddressService {
         address.setUser(user);
 
         addressRepository.save(address);
+
+        return new AddressResponse(
+                address.getAddressId(),
+                address.getAddress(),
+                address.getCity(),
+                address.getState(),
+                address.getName(),
+                address.getPhoneNumber(),
+                address.getPostalCode(),
+                user.getUserId()
+        );
     }
 
     @Override

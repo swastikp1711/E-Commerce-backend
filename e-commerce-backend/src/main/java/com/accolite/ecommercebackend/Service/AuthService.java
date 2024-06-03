@@ -8,4 +8,7 @@ public interface AuthService {
     UserAuthResponse createUser(SignUpUserRequest signUpUserRequest);
 
     UserAuthResponse login(LoginUserRequest request);
+
+
+    Boolean checkTokenExpiry(String authorizationHeader);
 }

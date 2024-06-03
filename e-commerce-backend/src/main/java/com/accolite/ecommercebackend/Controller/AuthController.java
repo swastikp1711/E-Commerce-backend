@@ -6,10 +6,7 @@ import com.accolite.ecommercebackend.Exception.UserNotFoundException;
 import com.accolite.ecommercebackend.Service.AuthService;
 import com.accolite.ecommercebackend.Service.ChangePasswordService;
 import com.accolite.ecommercebackend.Service.OtpService;
-import com.accolite.ecommercebackend.dto.Request.ChangePasswordRequest;
-import com.accolite.ecommercebackend.dto.Request.LoginUserRequest;
-import com.accolite.ecommercebackend.dto.Request.SendOtpRequest;
-import com.accolite.ecommercebackend.dto.Request.SignUpUserRequest;
+import com.accolite.ecommercebackend.dto.Request.*;
 import com.accolite.ecommercebackend.dto.Response.ChangePasswordResponse;
 import com.accolite.ecommercebackend.dto.Response.OtpResponse;
 import com.accolite.ecommercebackend.dto.Response.UserAuthResponse;
@@ -64,6 +61,17 @@ public class AuthController {
         } catch (IncorrectPasswordException e) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/auth/check/token/expiry")
+    public ResponseEntity<String> extractToken(@RequestBody Authorization authorization) {
+
+        Boolean isExpired = authService.checkTokenExpiry(authorization.getToken());
+
+        if(isExpired){
+            return new ResponseEntity<>("Token Expired",HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("Token not expired",HttpStatus.OK);
     }
 
 

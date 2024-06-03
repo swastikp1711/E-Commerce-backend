@@ -30,6 +30,7 @@ public class HomePageLoadResponse {
         private String brand;
         private Double price;
         private Double discountPercent;
+        private Integer productQuantity;
     }
 }
 

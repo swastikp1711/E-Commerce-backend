@@ -5,6 +5,7 @@ import com.accolite.ecommercebackend.dto.Request.AddressRequest;
 import com.accolite.ecommercebackend.dto.Response.AddressResponse;
 import com.accolite.ecommercebackend.dto.Response.AllAddressesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +25,9 @@ public class AddressController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addAddress(@RequestBody AddressRequest addressRequest) {
-        addressService.saveAddress(addressRequest);
-        return ResponseEntity.status(201).body("Address added successfully");
+    public ResponseEntity<AddressResponse> addAddress(@RequestBody AddressRequest addressRequest) {
+        ;
+        return new ResponseEntity<>(addressService.saveAddress(addressRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{addressId}")
