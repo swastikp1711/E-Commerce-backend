@@ -27,4 +27,10 @@ public class UserExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
     }
+
+    @ExceptionHandler(ProductQuantityExceededException.class)
+    public ResponseEntity<ExceptionResponse> productQuantityExceededException(ProductQuantityExceededException exception, WebRequest request) {
+        ExceptionResponse message = new ExceptionResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
 }

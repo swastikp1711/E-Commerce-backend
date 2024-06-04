@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
 
         String requestEmail = signUpUserRequest.getEmail();
 
-        if(userRepository.findByEmail(requestEmail)!=null){
+        if(userRepository.findByEmailAndDeletedDateIsNull(requestEmail)!=null){
             throw new UserAlreadyExistException("User Already Exist");
         }
 
@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserAuthResponse login(LoginUserRequest request) {
 
-        User user=userRepository.findByEmail(request.getEmail());
+        User user=userRepository.findByEmailAndDeletedDateIsNull(request.getEmail());
 
         if(user==null){
             throw new UserNotFoundException("User does not exist");

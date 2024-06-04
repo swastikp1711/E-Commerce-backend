@@ -30,7 +30,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AllAddressesResponse getAddressesForUser() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
 
         List<Address> addresses = addressRepository.findByUserAndDeletedDateIsNull(user);
@@ -54,7 +54,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressResponse saveAddress(AddressRequest addressRequest) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         Address address = new Address();
         address.setAddress(addressRequest.getAddress());

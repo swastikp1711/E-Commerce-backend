@@ -3,6 +3,7 @@ package com.accolite.ecommercebackend.Service.Impl;
 import com.accolite.ecommercebackend.Entity.Cart;
 import com.accolite.ecommercebackend.Entity.Product;
 import com.accolite.ecommercebackend.Entity.User;
+import com.accolite.ecommercebackend.Exception.ProductQuantityExceededException;
 import com.accolite.ecommercebackend.Repository.CartRepository;
 import com.accolite.ecommercebackend.Repository.ProductRepository;
 import com.accolite.ecommercebackend.Repository.UserRepository;
@@ -36,13 +37,20 @@ public class CartServiceImpl implements CartService {
     @Override
     public String addCartItem(UUID productId) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
-        Product product = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product ID"));
 
         Cart cart = cartRepository.findByUserAndProduct(user, product);
         if (cart != null) {
+            if (cart.getQuantity() + 1 > product.getQuantityAvailable()) {
+                throw new ProductQuantityExceededException("Cannot add more than available product quantity");
+            }
             cart.setQuantity(cart.getQuantity() + 1);
         } else {
+            if (1 > product.getQuantityAvailable()) {
+                throw new ProductQuantityExceededException("Cannot add more than available product quantity");
+            }
             cart = new Cart();
             cart.setUser(user);
             cart.setProduct(product);
@@ -82,7 +90,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartPageResponse getCartItems() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         List<Cart> cartItems = cartRepository.findByUser(user);
 
@@ -107,7 +115,7 @@ public class CartServiceImpl implements CartService {
     public CartItemUpdateResponse getCartItemsCount() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         Integer cartItemCount = cartRepository.sumQuantityByUser(user);
 
@@ -119,7 +127,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void removeAllCartItem() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         cartRepository.deleteAllItemsByUserId(user.getUserId());
     }
