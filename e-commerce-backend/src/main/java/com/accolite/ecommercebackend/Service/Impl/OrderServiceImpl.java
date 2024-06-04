@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         System.out.println(orderRequest);
         Address address = addressRepository.findById(orderRequest.getAddressId())
@@ -65,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
     public GetOrdersResponse getUserOrders() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         List<Orders> ordersList = orderRepository.findByUserOrderByOrderDateDesc(user);;
 

@@ -24,7 +24,7 @@ public class CustomUserServiceDetailsImpl implements UserDetailsService {
 
         System.out.println("input: "+ username);
 
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(username);
 
 
         if(user==null){

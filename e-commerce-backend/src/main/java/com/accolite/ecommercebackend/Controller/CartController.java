@@ -1,10 +1,12 @@
 package com.accolite.ecommercebackend.Controller;
 
 
+import com.accolite.ecommercebackend.Exception.ProductQuantityExceededException;
 import com.accolite.ecommercebackend.Repository.CartRepository;
 import com.accolite.ecommercebackend.Service.CartService;
 import com.accolite.ecommercebackend.dto.Response.CartItemUpdateResponse;
 import com.accolite.ecommercebackend.dto.Response.CartPageResponse;
+import com.accolite.ecommercebackend.dto.Response.ExceptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,15 @@ public class CartController {
 
 
     @PostMapping("/add/{productId}")
-    public ResponseEntity<String> addCartItem(@PathVariable UUID productId){
-        return new ResponseEntity<>(cartService.addCartItem(productId), HttpStatus.CREATED);
+    public ResponseEntity<?> addCartItem(@PathVariable UUID productId) {
+        try {
+            String message = cartService.addCartItem(productId);
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } catch (ProductQuantityExceededException e) {
+            return new ResponseEntity<>(new ExceptionResponse(e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ExceptionResponse("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/reduce/{cartId}")

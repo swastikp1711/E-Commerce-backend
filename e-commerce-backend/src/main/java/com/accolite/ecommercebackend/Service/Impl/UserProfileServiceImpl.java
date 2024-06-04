@@ -25,7 +25,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfileDto getUserProfile() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         return new UserProfileDto(
                 user.getEmail(),
@@ -39,7 +39,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public void updateUserProfile(UserProfileDto userProfileDto) {
 
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
 
         user.setEmail(userProfileDto.getEmail());
@@ -54,7 +54,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void deleteUserProfile() {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmailAndDeletedDateIsNull(email);
 
         user.setDeletedDate(LocalDateTime.now());
         userRepository.save(user);
