@@ -1,7 +1,7 @@
 # E-Commerce-Website #
 
 ## Overview ##
-This project is a comprehensive e-commerce website built using React js and Spring Boot. It offers a full-featured online shopping experience, including user authentication, product browsing, shopping cart functionality, order management, and payment processing. The project aims to provide a scalable and robust platform for online businesses.
+This project is a comprehensive e-commerce website built using React js and Spring Boot. It offers a full-featured online shopping experience, including user authentication, product browsing, shopping cart functionality, order management, invoice generation and payment processing. The project aims to provide a scalable and robust platform for online businesses.
 
 ## Features ##
 <li><b>User Authentication and Authorization : </b> Secure login and registration, role-based access control.</li>
@@ -10,6 +10,8 @@ This project is a comprehensive e-commerce website built using React js and Spri
 <li><b>Order Management : </b>Place orders, view order history, manage orders.</li>
 <li><b>Payment Integration : </b>Integrate with payment gateways for processing payments.</li>
 <li><b>Search and Filter : </b>Search products by name, category, and other attributes.</li>
+<li><b>Product Management : </b>Add, update, delete, and display products</li>
+<li><b>Invoice Generation : </b>Automatically generate invoices and can be downloaded.</li>
 <li><b>Responsive Design : </b>Mobile-friendly design for a seamless experience on all devices.</li>
 
 ## Technologies Used ##
@@ -54,7 +56,7 @@ spring.jpa.hibernate.ddl-auto=update
 mvn clean install
 mvn spring-boot:run
 ```
-The application should now be running on http://localhost:5173
+The application should now be running on http://localhost:8080
 
 ## Project Structure ##
 ![image](https://github.com/vasu-choudhary/E-Commerce-backend/assets/170304449/6a407c59-0d13-442a-886a-bf47fdbbd04a)
@@ -66,7 +68,7 @@ The application should now be running on http://localhost:5173
 <li><b>exception : </b>Contains custom exception classes and handlers.</li>
 <li><b>repository : </b> Contains the Spring Data JPA repositories.</li>
 <li><b>security : </b> Contains security configuration classes.</li>
-<li><b>service : </b>Contains the service layer classes.</li>
+<li><b>service : </b>Contains the service layer interfaces and their implementation classes.</li>
 <li><b>application.properties : </b>Configuration file for the application.</li>
 
 
