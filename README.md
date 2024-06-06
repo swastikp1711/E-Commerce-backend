@@ -33,5 +33,18 @@ This project is a comprehensive e-commerce website built using React js and Spri
 git clone https://github.com/yourusername/e-commerce-website.git
 ```
 ```
-cd e-commerce-website
+cd e-commerce-app
+```
+## Set Up the Database ##
+1. Create a new database in MySQL:
+ ```
+CREATE DATABASE ecommerce_db;
+```
+2. Update the database configuration in src/main/resources/application.properties:
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/ecommercedb
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.jpa.hibernate.ddl-auto=update
+
 ```
