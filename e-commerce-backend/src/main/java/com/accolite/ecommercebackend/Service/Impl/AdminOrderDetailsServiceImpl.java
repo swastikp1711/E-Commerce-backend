@@ -26,7 +26,7 @@ public class AdminOrderDetailsServiceImpl implements AdminOrderDetailsService{
 
     @Override
     public List<AdminOrderDetailsResponse> getAllOrders() {
-        List<Orders> ordersList = adminOrderDetailsRepository.findAll();
+        List<Orders> ordersList = adminOrderDetailsRepository.findAllByOrderByOrderDateDesc();
         return ordersList.stream().map(this::convertToOrderResponse).collect(Collectors.toList());
     }
 

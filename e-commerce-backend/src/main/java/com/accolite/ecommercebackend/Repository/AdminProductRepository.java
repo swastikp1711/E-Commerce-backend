@@ -19,14 +19,13 @@ public interface AdminProductRepository extends JpaRepository<Product, UUID> {
 
     @Query("Select s from SubCategory s where s.subCategoryName=:subcategoryName")
     SubCategory findbySubCategorybyName(String subcategoryName);
-    @Query("SELECT p FROM Product p WHERE p.deletedDate IS NULL AND p.quantityAvailable > 0")
+    @Query("SELECT p FROM Product p WHERE p.deletedDate IS NULL AND p.quantityAvailable > 0 order by createdDate Desc")
     List<Product> findAvailableProducts();
 
     @Query("SELECT p FROM Product p WHERE p.productId = :productId AND p.deletedDate IS NULL AND p.quantityAvailable > 0")
     Optional<Product> findAvailableProductById(UUID productId);
 
     Optional<Product> findByProductIdAndDeletedDateIsNullAndQuantityAvailableGreaterThan(UUID productId, int quantity);
-    List<Product> findProductByDeletedDateIsNullAndQuantityAvailableGreaterThan(int quantity);
     @Query("SELECT p FROM Product p WHERE p.category.categoryId = :categoryId AND p.deletedDate IS NULL AND p.quantityAvailable > 0")
     List<Product> findProductsByCategory(UUID categoryId);
 
