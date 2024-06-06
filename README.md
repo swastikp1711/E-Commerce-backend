@@ -30,7 +30,6 @@ The frontend code for this project is available in a separate repository. You ca
 ### Clone the Repository ###
 
 
-[git clone](https://github.com/vasu-choudhary/E-Commerce-backend)
 ```
 git clone https://github.com/yourusername/e-commerce-website.git
 ```
@@ -70,15 +69,8 @@ The application should now be running on http://localhost:5173
 <li><b>service : </b>Contains the service layer classes.</li>
 <li><b>application.properties : </b>Configuration file for the application.</li>
 
-## Contributing ##
-1. Fork the repository.
-2. Create a new branch (<b>git checkout -b feature/your-feature</b>).
-3. Commit your changes (<b>git commit -am 'Add your feature'</b>).
-4. Push to the branch (<b>git push origin feature/your-feature</b>).
-5. Create a new Pull Request.
-
 
 ## Documentation ##
-[Maven](https://maven.apache.org/scm.html)  
-[Spring Boot](https://spring.io/projects/spring-boot)  
-[MySQL Community server](https://dev.mysql.com/downloads/file/?id=526927)
+1. [Maven](https://maven.apache.org/scm.html) 
+2. [Spring Boot](https://spring.io/projects/spring-boot)
+3. [MySQL Community server](https://dev.mysql.com/downloads/file/?id=526927)
