@@ -26,8 +26,7 @@ This project is a comprehensive e-commerce website built using React js and Spri
 
 ## Getting Started ##
 ### Frontend Repository ###
-The frontend code for this project is available in a separate repository. You can find it here.
-()
+The frontend code for this project is available in a separate repository. You can find it [here](https://github.com/vasu-choudhary/E-Commerce-frontend)
 ### Clone the Repository ###
 
 
@@ -80,6 +79,6 @@ The application should now be running on http://localhost:5173
 
 
 ## Documentation ##
-Maven Documentation is available online at ()
-Spring Boot ()
-MySQL ()
+[Maven](https://maven.apache.org/scm.html)  
+[Spring Boot](https://spring.io/projects/spring-boot)  
+[MySQL Community server](https://dev.mysql.com/downloads/file/?id=526927)
