@@ -28,5 +28,10 @@ This project is a comprehensive e-commerce website built using React js and Spri
 ### Clone the Repository ###
 
 
-[git clone]()
+[git clone](https://github.com/vasu-choudhary/E-Commerce-backend)
+```
+git clone https://github.com/yourusername/e-commerce-website.git
+```
+```
 cd e-commerce-website
+```
