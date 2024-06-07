@@ -4,27 +4,31 @@
 This project is a comprehensive e-commerce website built using React js and Spring Boot. It offers a full-featured online shopping experience, including user authentication, product browsing, shopping cart functionality, order management, invoice generation and payment processing. The project aims to provide a scalable and robust platform for online businesses.
 
 ## Features ##
-<li><b>User Authentication and Authorization : </b> Secure login and registration, role-based access control.</li>
-<li><b>Product Management : </b>Add, update, delete, and display products.</li>
-<li><b>Shopping Cart : </b>Add to cart, update quantity, remove from cart.</li>
-<li><b>Order Management : </b>Place orders, view order history, manage orders.</li>
-<li><b>Payment Integration : </b>Integrate with payment gateways for processing payments.</li>
-<li><b>Search and Filter : </b>Search products by name, category, and other attributes.</li>
-<li><b>Product Management : </b>Add, update, delete, and display products</li>
-<li><b>Invoice Generation : </b>Automatically generate invoices and can be downloaded.</li>
-<li><b>Responsive Design : </b>Mobile-friendly design for a seamless experience on all devices.</li>
+* <b>User Authentication and Authorization : </b> Secure login and registration, role-based access control.
+* <b>Product Management : </b>Add, update, delete, and display products.
+* <b>Shopping Cart : </b>Add to cart, update quantity, remove from cart.
+* <b>Order Management : </b>Place orders, view order history, manage orders.
+* <b>Payment Integration : </b>Integrate with payment gateways for processing payments.
+* <b>Search and Filter : </b>Search products by name, category, and other attributes.
+* <b>Product Management : </b>Add, update, delete, and display products.
+* <b>Invoice Generation : </b>Automatically generate invoices and can be downloaded.
+* <b>Security:</b>
+     * Secure user authentication with encrypted passwords.
+     * Protect API endpoints with authentication tokens.
+     * Implement input validation to prevent XSS and SQL injection.
+* <b>Responsive Design : </b>Mobile-friendly design for a seamless experience on all devices.
 
 ## Technologies Used ##
-<li><b>Backend : </b>  Spring Boot</li>
-<li><b>Database : </b> MySQL</li>
-<li><b>Frontend : </b> React JS</li>
-<li><b>Build Tool : </b> Maven</li>
-<li><b>Version Control : </b> Git</li>
+* <b>Backend : </b>  Spring Boot
+* <b>Database : </b> MySQL
+* <b>Frontend : </b> React JS
+* <b>Build Tool : </b> Maven
+* <b>Version Control : </b> Git
 
 ## Prerequisites ##
-<li>JDK 17</li>
-<li>Maven 4.0.0</li>
-<li>MySQL 8.0</li>
+* JDK 17
+* Maven 4.0.0
+* MySQL 8.0
 
 ## Getting Started ##
 ### Frontend Repository ###
@@ -61,18 +65,18 @@ The application should now be running on http://localhost:8080
 ## Project Structure ##
 ![image](https://github.com/vasu-choudhary/E-Commerce-backend/assets/170304449/6a407c59-0d13-442a-886a-bf47fdbbd04a)
 
-<li><b>Config : </b> Contains configuration classes for the application.</li>
-<li><b>controller : </b>Contains the web controllers.</li>
-<li><b>dto : </b>Contains Data Transfer Object classes.</li>
-<li><b>entity : </b> Contains the entity classes.</li>
-<li><b>exception : </b>Contains custom exception classes and handlers.</li>
-<li><b>repository : </b> Contains the Spring Data JPA repositories.</li>
-<li><b>security : </b> Contains security configuration classes.</li>
-<li><b>service : </b>Contains the service layer interfaces and their implementation classes.</li>
-<li><b>application.properties : </b>Configuration file for the application.</li>
+* <b>Config : </b> Contains configuration classes for the application.
+* <b>controller : </b>Contains the web controllers.
+* <b>dto : </b>Contains Data Transfer Object classes.
+* <b>entity : </b> Contains the entity classes.
+* <b>exception : </b>Contains custom exception classes and handlers.
+* <b>repository : </b> Contains the Spring Data JPA repositories.
+* <b>security : </b> Contains security configuration classes.
+* <b>service : </b>Contains the service layer interfaces and their implementation classes.
+* <b>application.properties : </b>Configuration file for the application.
 
 
 ## Documentation ##
-1. [Maven](https://maven.apache.org/scm.html) 
-2. [Spring Boot](https://spring.io/projects/spring-boot)
-3. [MySQL Community server](https://dev.mysql.com/downloads/file/?id=526927)
+*  [Maven](https://maven.apache.org/scm.html)
+*  [Spring Boot](https://spring.io/projects/spring-boot)
+*  [MySQL Community server](https://dev.mysql.com/downloads/file/?id=526927)
