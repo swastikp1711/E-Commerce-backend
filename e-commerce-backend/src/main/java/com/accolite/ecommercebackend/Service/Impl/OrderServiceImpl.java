@@ -3,6 +3,7 @@ package com.accolite.ecommercebackend.Service.Impl;
 import com.accolite.ecommercebackend.Entity.*;
 import com.accolite.ecommercebackend.Repository.*;
 import com.accolite.ecommercebackend.Service.OrderService;
+import com.accolite.ecommercebackend.Service.PaymentService;
 import com.accolite.ecommercebackend.dto.Request.OrderDetailsRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderProductsInfoRequest;
 import com.accolite.ecommercebackend.dto.Request.OrderRequest;
@@ -36,6 +37,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest) {
         String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
@@ -58,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public Orders findOrderbyId(UUID orderId) {
-        Orders orders=orderRepository.findbyOrderId(orderId);
+        Orders orders=orderRepository.findByOrderId(orderId);
         return orders;
     }
     @Override
@@ -106,6 +110,11 @@ public class OrderServiceImpl implements OrderService {
         return new GetOrdersResponse(orderResponses);
     }
 
+    @Override
+    public List<Orders> getPendingOrders() {
+        return orderRepository.findByOrderStatus("Pending");
+    }
+
 
     @Override
     public void createOrderDetails(OrderDetailsRequest orderDetailsRequest) {
@@ -124,6 +133,8 @@ public class OrderServiceImpl implements OrderService {
             orderDetail.setUnitPrice(productInfo.getDiscountedPrice());
 
             orderDetailRepository.save(orderDetail);
+
+            paymentService.reduceProductQuantity(orderDetailsRequest.getOrderId());
         }
     }
 

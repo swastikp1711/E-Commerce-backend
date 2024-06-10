@@ -17,4 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID>{
 	@Query("update Product p set p.quantityAvailable = p.quantityAvailable-(select quantity from OrderDetail od where od.orders.orderId=:orderId and od.product.productId=p.productId), p.updatedDate=:updatedDate where p.productId in (select od.product.productId from OrderDetail od where od.orders.orderId=:orderId)")
 	void reduceQuantity(UUID orderId, LocalDateTime updatedDate);
 
+	@Modifying
+	@Transactional
+	@Query("update Product p set p.quantityAvailable = p.quantityAvailable+(select quantity from OrderDetail od where od.orders.orderId=:orderId and od.product.productId=p.productId), p.updatedDate=:updatedDate where p.productId in (select od.product.productId from OrderDetail od where od.orders.orderId=:orderId)")
+	void restoreQuantity(UUID orderId, LocalDateTime updatedDate);
 }

@@ -4,7 +4,9 @@ package com.accolite.ecommercebackend.Controller;
 import com.accolite.ecommercebackend.Exception.ProductQuantityExceededException;
 import com.accolite.ecommercebackend.Repository.CartRepository;
 import com.accolite.ecommercebackend.Service.CartService;
+import com.accolite.ecommercebackend.dto.Request.CartItemsQuantityRequest;
 import com.accolite.ecommercebackend.dto.Response.CartItemUpdateResponse;
+import com.accolite.ecommercebackend.dto.Response.CartItemsQuantityResponse;
 import com.accolite.ecommercebackend.dto.Response.CartPageResponse;
 import com.accolite.ecommercebackend.dto.Response.ExceptionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -72,4 +75,11 @@ public class CartController {
         CartItemUpdateResponse response = cartService.getCartItemsCount();
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/quantity/check")
+    public ResponseEntity<CartItemsQuantityRequest> checkCartQuantity(@RequestBody CartItemsQuantityRequest cartItemsQuantityRequest) {
+        CartItemsQuantityRequest response = cartService.checkCartQuantity(cartItemsQuantityRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }

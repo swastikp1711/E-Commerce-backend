@@ -13,7 +13,6 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-
 	User findByEmailAndDeletedDateIsNull(String email);
 	@Transactional
 	@Modifying

@@ -17,9 +17,7 @@ public interface OrderRepository extends JpaRepository<Orders, UUID> {
 
     List<Orders> findByUserOrderByOrderDateDesc(User user);
 
-    @Query("Select o from Orders o Where o.orderId=:orderId")
-    Orders findbyOrderId(UUID orderId);
+    Orders findByOrderId(UUID orderId);
 
-
-
+    List<Orders> findByOrderStatus(String orderStatus);
 }

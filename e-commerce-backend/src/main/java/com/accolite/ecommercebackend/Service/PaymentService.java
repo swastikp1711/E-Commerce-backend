@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface PaymentService {
 	void reduceProductQuantity(UUID orderId);
 
+	void restoreProductQuantity(UUID orderId);
+
 	void setStatus(Orders orders, String paymentId);
 
 	void addPayment(Orders orders, String paymentId);

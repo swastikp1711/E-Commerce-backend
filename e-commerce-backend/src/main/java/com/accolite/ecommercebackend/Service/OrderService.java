@@ -7,6 +7,7 @@ import com.accolite.ecommercebackend.dto.Response.GetOrdersResponse;
 import com.accolite.ecommercebackend.dto.Response.OrderDetailsInfoResponse;
 import com.accolite.ecommercebackend.dto.Response.OrderResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
@@ -19,4 +20,6 @@ public interface OrderService {
 
     OrderDetailsInfoResponse getOrderDetailsById(UUID orderId);
     GetOrdersResponse getOrders();
+
+    List<Orders> getPendingOrders();
 }
