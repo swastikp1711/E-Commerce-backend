@@ -27,6 +27,14 @@ public class PaymentServiceImpl implements PaymentService {
 		LocalDateTime date=LocalDateTime.now();
 		productRepository.reduceQuantity(orderId,date );
 	}
+
+	@Override
+	public void restoreProductQuantity(UUID orderId){
+		LocalDateTime date=LocalDateTime.now();
+		productRepository.restoreQuantity(orderId,date );
+	}
+
+
 	@Override
 	public void setStatus(Orders orders, String paymentId){
 		Optional<Payment> payment=paymentRepository.findById(paymentId);

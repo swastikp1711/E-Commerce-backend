@@ -28,6 +28,8 @@ public class Orders {
 
     private Double totalAmount;
 
+    private String PaymentLinkId;
+
 
     private LocalDateTime orderDate;
 

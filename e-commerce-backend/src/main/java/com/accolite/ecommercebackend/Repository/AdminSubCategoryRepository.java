@@ -1,5 +1,6 @@
 package com.accolite.ecommercebackend.Repository;
 
+import com.accolite.ecommercebackend.Entity.Category;
 import com.accolite.ecommercebackend.Entity.SubCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,9 +19,10 @@ public interface AdminSubCategoryRepository extends JpaRepository<SubCategory, U
     Optional<SubCategory> findAvailableSubcategoryById(UUID subCategoryId);
 
     //    @Query("SELECT s FROM SubCategory s WHERE s.categoryId IN (SELECT c FROM Category c WHERE c.categoryName = :categoryName)")
-    @Query("SELECT s FROM SubCategory s WHERE s.category.categoryName = :categoryName")
-    List<SubCategory> findbyCategoryByName(String categoryName);
 
+    List<SubCategory> findByCategoryCategoryNameAndDeletedDateIsNull(String categoryName);
+
+    SubCategory findBySubCategoryNameAndDeletedDateNull(String subCategoryName);
 
 //    select subcatname from subcategory s where s.catid in (select catid from category c where c.catname = categoryname)
 //    @Query("SELECT s FROM SubCategory s WHERE s.category.categoryId =: categoryId AND s.deletedDate IS NULL")

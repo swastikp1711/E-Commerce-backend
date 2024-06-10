@@ -119,15 +119,9 @@ public class AdminProductServiceImpl implements AdminProductService {
         product.setPrice(productRequestadmin.getPrice());
         product.setDiscountPercent(productRequestadmin.getDiscountPercent());
         product.setDeliveryCharges(productRequestadmin.getDeliveryCharges());
-        product.setCategory(adminProductRepository.findbyCategorybyName(productRequestadmin.getCategory())); // Assuming constructor
-        product.setSubCategory(adminProductRepository.findbySubCategorybyName(productRequestadmin.getSubCategory())); // Assuming constructor
-//        Category category = categoryRepository.findById(productRequest.getCategoryId())
-//                .orElseThrow(() -> new RuntimeException("Category not found"));
-//        SubCategory subCategory = subCategoryRepository.findById(productRequest.getSubCategoryId())
-//                .orElseThrow(() -> new RuntimeException("SubCategory not found"));
-//
-//        product.setCategory(category);
-//        product.setSubCategory(subCategory);
+        product.setCategory(adminCategoryRepository.findByCategoryNameAndDeletedDateNull(productRequestadmin.getCategory())); // Assuming constructor
+        product.setSubCategory(adminSubCategoryRepository.findBySubCategoryNameAndDeletedDateNull(productRequestadmin.getSubCategory())); // Assuming constructor
+
     }
 
     public ProductResponseadmin mapToDto(Product product) {

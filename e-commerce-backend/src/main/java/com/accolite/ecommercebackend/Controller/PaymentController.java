@@ -46,66 +46,52 @@ public class PaymentController {
 
 	@PostMapping("/payments/{orderId}")
 	public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable UUID orderId) throws RazorpayException {
-		Orders order=orderService.findOrderbyId(orderId);
+		Orders order = orderService.findOrderbyId(orderId);
 		System.out.println(apiKey);
 		System.out.println(apiSecret);
 
-		try{
-			RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
-			JSONObject paymentLinkRequest=new JSONObject();
-			paymentLinkRequest.put("amount",Math.ceil(order.getTotalAmount()*100));
-			paymentLinkRequest.put("currency","INR");
+		try {
+			RazorpayClient razorpayClient = new RazorpayClient(apiKey, apiSecret);
+			JSONObject paymentLinkRequest = new JSONObject();
+			paymentLinkRequest.put("amount", Math.ceil(order.getTotalAmount() * 100));
+			paymentLinkRequest.put("currency", "INR");
 
-			JSONObject customer=new JSONObject();
-			customer.put("name",order.getUser().getFirstName());
-			customer.put("email",order.getUser().getEmail());
-			paymentLinkRequest.put("customer",customer);
+			JSONObject customer = new JSONObject();
+			customer.put("name", order.getUser().getFirstName());
+			customer.put("email", order.getUser().getEmail());
+			paymentLinkRequest.put("customer", customer);
 
-			JSONObject notify=new JSONObject();
-			notify.put("sms",true);
-			notify.put("email",true);
-			paymentLinkRequest.put("notify",notify);
+			JSONObject notify = new JSONObject();
+			notify.put("sms", true);
+			notify.put("email", true);
+			paymentLinkRequest.put("notify", notify);
 
-			paymentLinkRequest.put("callback_url","http://localhost:5173/paymentsuccessfull/"+orderId.toString());
-			paymentLinkRequest.put("callback_method","get");
-			PaymentLink payment=razorpayClient.paymentLink.create(paymentLinkRequest);
+			// Add orderId to notes
+			JSONObject notes = new JSONObject();
+			notes.put("order_id", orderId.toString());
+			paymentLinkRequest.put("notes", notes);
 
-			String paymentLinkId=payment.get("id");
+			paymentLinkRequest.put("callback_url", "http://localhost:5173/paymentsuccessful/" + orderId.toString());
+			paymentLinkRequest.put("callback_method", "get");
 
-			String paymentLinkUrl=payment.get("short_url");
-			System.out.println("Payment Link ID: "+paymentLinkId);
-			System.out.println("Payment Link URL: "+paymentLinkUrl);
+			// Set expire_by to 15 minutes from now
+			long currentTimeInSeconds = System.currentTimeMillis() / 1000;
+			long expireBy = currentTimeInSeconds + 16 * 60;
+			paymentLinkRequest.put("expire_by", expireBy);
+
+			PaymentLink payment = razorpayClient.paymentLink.create(paymentLinkRequest);
+
+			String paymentLinkId = payment.get("id");
+			String paymentLinkUrl = payment.get("short_url");
+			System.out.println("Payment Link ID: " + paymentLinkId);
+			System.out.println("Payment Link URL: " + paymentLinkUrl);
 
 			PaymentLinkResponse res = new PaymentLinkResponse();
 			res.setPayment_link_id(paymentLinkId);
 			res.setPayment_link_url(paymentLinkUrl);
 
-			return new ResponseEntity<PaymentLinkResponse>(res, HttpStatus.CREATED);
-		}catch(Exception e){
-			throw new RazorpayException(e.getMessage());
-
-		}
-	}
-
-	@PostMapping("/payments")
-	public ResponseEntity<PaymentResponse> redirect(@RequestParam(name="payment_id") String paymentId, @RequestParam(name="order_id") UUID orderId) throws RazorpayException {
-		Orders orders=orderService.findOrderbyId(orderId);
-		RazorpayClient razorpayClient=new RazorpayClient(apiKey,apiSecret);
-		try{
-
-			Payment payment=razorpayClient.payments.fetch(paymentId);
-			if(orders.getOrderStatus().equals("Cancelled")){
-				System.out.println("##Inside Render #####################################################"+ orders.getOrderStatus());
-				paymentService.addPayment(orders, paymentId);
-				paymentService.setStatus(orders, paymentId);
-				paymentService.reduceProductQuantity(orderId);
-			}
-			PaymentResponse res=new PaymentResponse();
-			res.setMessage("Order Placed");
-			res.setStatus(true);
-			return new ResponseEntity<PaymentResponse>(res,HttpStatus.OK);
-
-		}catch (Exception e){
+			return new ResponseEntity<>(res, HttpStatus.CREATED);
+		} catch (Exception e) {
 			throw new RazorpayException(e.getMessage());
 		}
 	}

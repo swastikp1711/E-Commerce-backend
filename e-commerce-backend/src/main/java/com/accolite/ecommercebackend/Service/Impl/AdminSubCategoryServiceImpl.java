@@ -22,8 +22,7 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
     private AdminCategoryRepository adminCategoryRepository;
 
     public SubCategory createSubCategory(String categoryName, SubCategory subCategory) {
-        Category category = adminCategoryRepository.findCategoryByCategoryName(categoryName)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = adminCategoryRepository.findByCategoryNameAndDeletedDateNull(categoryName);
         subCategory.setCategory(category);
         subCategory.setCreatedDate(LocalDateTime.now());
         return adminSubCategoryRepository.save(subCategory);
@@ -34,7 +33,7 @@ public class AdminSubCategoryServiceImpl implements AdminSubCategoryService {
                 .stream().map(this::mapToDto).collect(Collectors.toList());
     }
     public List<SubCategoryAdminResponse> getAllSubCategoriesbyCategoryName(String categoryName){
-        return adminSubCategoryRepository.findbyCategoryByName(categoryName).stream()
+        return adminSubCategoryRepository.findByCategoryCategoryNameAndDeletedDateIsNull(categoryName).stream()
                 .map(subCategory -> mapToDto(subCategory)).collect(Collectors.toList());
     }
 //    @Override

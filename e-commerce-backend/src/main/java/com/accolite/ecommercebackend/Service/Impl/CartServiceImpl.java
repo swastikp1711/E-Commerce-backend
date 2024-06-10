@@ -8,6 +8,8 @@ import com.accolite.ecommercebackend.Repository.CartRepository;
 import com.accolite.ecommercebackend.Repository.ProductRepository;
 import com.accolite.ecommercebackend.Repository.UserRepository;
 import com.accolite.ecommercebackend.Service.CartService;
+import com.accolite.ecommercebackend.dto.Request.CartItemsQuantity;
+import com.accolite.ecommercebackend.dto.Request.CartItemsQuantityRequest;
 import com.accolite.ecommercebackend.dto.Response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,12 +47,12 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserAndProduct(user, product);
         if (cart != null) {
             if (cart.getQuantity() + 1 > product.getQuantityAvailable()) {
-                throw new ProductQuantityExceededException("Cannot add more than available product quantity");
+                throw new ProductQuantityExceededException("Quantity Exceeds Stock Limit");
             }
             cart.setQuantity(cart.getQuantity() + 1);
         } else {
             if (1 > product.getQuantityAvailable()) {
-                throw new ProductQuantityExceededException("Cannot add more than available product quantity");
+                throw new ProductQuantityExceededException("Quantity Exceeds Stock Limit");
             }
             cart = new Cart();
             cart.setUser(user);
@@ -119,7 +122,7 @@ public class CartServiceImpl implements CartService {
 
         Integer cartItemCount = cartRepository.sumQuantityByUser(user);
 
-        if(cartItemCount==null) cartItemCount =0;
+        if (cartItemCount == null) cartItemCount = 0;
         return new CartItemUpdateResponse(cartItemCount);
 
     }
@@ -131,7 +134,38 @@ public class CartServiceImpl implements CartService {
 
         cartRepository.deleteAllItemsByUserId(user.getUserId());
     }
+
+    @Override
+    public CartItemsQuantityRequest checkCartQuantity(CartItemsQuantityRequest cartItemsQuantityRequest) {
+
+        System.out.println(cartItemsQuantityRequest);
+        CartItemsQuantityRequest responseList = new CartItemsQuantityRequest();
+
+        responseList.setCartItemsQuantityDetails(new ArrayList<>());
+
+        cartItemsQuantityRequest.getCartItemsQuantityDetails().forEach(item -> {
+            UUID productId = item.getProductId();
+            Integer requestedQuantity = item.getQuantity();
+
+            if (requestedQuantity != null) { // Check if requestedQuantity is not null
+                Integer availableQuantity = productRepository.findById(productId)
+                        .map(product -> product.getQuantityAvailable())
+                        .orElse(0);
+
+                Integer responseQuantity = Math.min(requestedQuantity, availableQuantity);
+                System.out.println(responseQuantity);
+                responseList.getCartItemsQuantityDetails().add(new CartItemsQuantity(productId, responseQuantity));
+            } else {
+                // Handle the case when requestedQuantity is null
+                // You can log a warning or handle it according to your use case
+                System.out.println("Requested quantity is null for product ID: " + productId);
+            }
+        });
+
+        return responseList;
+    }
 }
+
 
 
 /*
