@@ -39,21 +39,6 @@ public class AdminProductController {
         return ResponseEntity.ok(adminProductServiceImpl.fetchProductById(productId));
     }
 
-    @GetMapping("api/admin/products/byCategory/{categoryId}")
-    public ResponseEntity<List<ProductResponseadmin>> fetchProductsByCategory(@PathVariable UUID categoryId) {
-        return ResponseEntity.ok(adminProductServiceImpl.fetchProductsByCategory(categoryId));
-    }
-
-    @GetMapping("api/admin/products/bySubCategory/{subCategoryId}")
-    public ResponseEntity<List<ProductResponseadmin>> fetchProductsBySubCategory(@PathVariable UUID subCategoryId) {
-        return ResponseEntity.ok(adminProductServiceImpl.fetchProductsBySubCategoryId(subCategoryId));
-    }
-
-    @GetMapping("api/admin/products/byCategoryAndSubCategory")
-    public ResponseEntity<List<ProductResponseadmin>> fetchProductsByCategoryAndSubCategory(@RequestParam UUID categoryId, @RequestParam UUID subCategoryId) {
-        return ResponseEntity.ok(adminProductServiceImpl.fetchProductsByCategoryAndSubCategory(categoryId, subCategoryId));
-    }
-
     @DeleteMapping("api/admin/products/{productId}")
     public ResponseEntity<ProductResponseadmin> deleteProduct(@PathVariable String productId) {
         try {

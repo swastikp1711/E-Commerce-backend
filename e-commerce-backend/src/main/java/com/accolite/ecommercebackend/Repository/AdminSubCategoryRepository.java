@@ -15,16 +15,7 @@ public interface AdminSubCategoryRepository extends JpaRepository<SubCategory, U
     @Query("SELECT s FROM SubCategory s WHERE s.deletedDate IS NULL")
     List<SubCategory> findAvailableSubcategory();
 
-    @Query("SELECT s FROM SubCategory s WHERE s.subCategoryId = :subCategoryId AND s.deletedDate IS NULL")
-    Optional<SubCategory> findAvailableSubcategoryById(UUID subCategoryId);
-
-    //    @Query("SELECT s FROM SubCategory s WHERE s.categoryId IN (SELECT c FROM Category c WHERE c.categoryName = :categoryName)")
-
     List<SubCategory> findByCategoryCategoryNameAndDeletedDateIsNull(String categoryName);
 
     SubCategory findBySubCategoryNameAndDeletedDateNull(String subCategoryName);
-
-//    select subcatname from subcategory s where s.catid in (select catid from category c where c.catname = categoryname)
-//    @Query("SELECT s FROM SubCategory s WHERE s.category.categoryId =: categoryId AND s.deletedDate IS NULL")
-//    List<SubCategory> findAvailableSubcategoryByCategoryId(@Param("categoryId") UUID categoryId);
 }
