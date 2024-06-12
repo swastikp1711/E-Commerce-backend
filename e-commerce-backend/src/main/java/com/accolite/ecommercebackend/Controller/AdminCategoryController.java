@@ -35,24 +35,4 @@ public class AdminCategoryController {
                 .map(category -> new CategoryAdminResponse(category.getCategoryId(),category.getCategoryName()))
                 .collect(Collectors.toList());
     }
-
-    @GetMapping("/{categoryId}")
-    public CategoryAdminResponse getCategoryById(@PathVariable UUID categoryId) {
-        Category category = adminCategoryServiceImpl.getCategoryById(categoryId);
-        return new CategoryAdminResponse(category.getCategoryId(),category.getCategoryName());
-    }
-
-    @PutMapping("/{categoryId}")
-    public CategoryAdminResponse updateCategory(@PathVariable UUID categoryId, @RequestBody CategoryAdminRequest categoryAdminRequest) {
-        Category category = new Category();
-        category.setCategoryName(categoryAdminRequest.getCategoryName());
-        category.setCreatedDate(LocalDateTime.now());
-        Category newCategory = adminCategoryServiceImpl.updateCategory(categoryId,category);
-        return new CategoryAdminResponse(newCategory.getCategoryId(),newCategory.getCategoryName());
-    }
-
-    @DeleteMapping("/{categoryId}")
-    public ResponseEntity<CategoryAdminResponse> deleteCategory(@PathVariable UUID categoryId) {
-        return ResponseEntity.ok(adminCategoryServiceImpl.deleteCategory(categoryId));
-    }
 }

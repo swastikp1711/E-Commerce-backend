@@ -9,9 +9,4 @@ import java.util.UUID;
 public interface AdminSubCategoryService {
     public SubCategory createSubCategory(String categoryName, SubCategory subCategory);
     public List<SubCategoryAdminResponse> getAllSubCategories();
-    public SubCategory getSubCategoryById(UUID subCategoryId);
-    public SubCategoryAdminResponse mapToDto(SubCategory subCategory);
-    public SubCategory updateSubCategory(UUID subCategoryId, SubCategory subCategoryDetails);
-    public SubCategoryAdminResponse deleteSubCategory(UUID subCategoryId);
-//    public List<SubCategoryAdminResponse> getSubcategoryByCategoryId(UUID categoryId);
 }

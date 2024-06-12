@@ -41,7 +41,6 @@ public class AdminOrderDetailsServiceImpl implements AdminOrderDetailsService{
 
     private OrderDetailsResponse convertToOrderDetailResponse(OrderDetail orderDetail) {
         OrderDetailsResponse response = new OrderDetailsResponse();
-//        response.setOrderDetailId(orderDetail.getOrderDetailId());
         response.setProductId(orderDetail.getProduct().getProductId());
         response.setProductTitle(orderDetail.getProduct().getTitle());
         response.setProductImage(orderDetail.getProduct().getImageUrl());

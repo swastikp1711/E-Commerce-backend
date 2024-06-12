@@ -27,8 +27,5 @@ public class AdminOrderDetailsController {
     public void updateOrderStatus(@PathVariable UUID orderId,@RequestBody UpdateOrderStatusRequest request) {
         adminOrderDetailsService.updateOrderStatus(orderId,request);
     }
-//    @PutMapping("/{productId}")
-//    public ResponseEntity<UpdateProductRequest> updateProduct(@PathVariable UUID productId, @RequestBody UpdateProductRequest updateProductRequest) {
-//        return ResponseEntity.ok(adminProductServiceImpl.updateProduct(productId, updateProductRequest));
-//    }
+
 }
